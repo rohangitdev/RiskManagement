@@ -1,0 +1,2940 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Service for namespace RiskService",
+    "description": "This service is located at [/service/risk/](/service/risk/)",
+    "version": ""
+  },
+  "x-sap-api-type": "ODATAV4",
+  "x-odata-version": "4.0",
+  "x-sap-shortText": "Service for namespace RiskService",
+  "servers": [
+    {
+      "url": "/service/risk"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Mitigations"
+    },
+    {
+      "name": "Risks"
+    }
+  ],
+  "paths": {
+    "/$batch": {
+      "post": {
+        "summary": "Send a group of requests",
+        "description": "Group multiple requests into a single request payload, see [Batch Requests](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_BatchRequests).\n\n*Please note that \"Try it out\" is not supported for this request.*",
+        "tags": [
+          "Batch Requests"
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Batch request",
+          "content": {
+            "multipart/mixed;boundary=request-separator": {
+              "schema": {
+                "type": "string"
+              },
+              "example": "--request-separator\nContent-Type: application/http\nContent-Transfer-Encoding: binary\n\nGET Risks HTTP/1.1\nAccept: application/json\n\n\n--request-separator--"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch response",
+            "content": {
+              "multipart/mixed": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "--response-separator\nContent-Type: application/http\n\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{...}\n--response-separator--"
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Mitigations": {
+      "get": {
+        "summary": "Retrieve a list of mitigations.",
+        "tags": [
+          "Mitigations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdAt desc",
+                  "createdBy",
+                  "createdBy desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "modifiedBy",
+                  "modifiedBy desc",
+                  "ID",
+                  "ID desc",
+                  "descr",
+                  "descr desc",
+                  "owner",
+                  "owner desc",
+                  "timeline",
+                  "timeline desc",
+                  "IsActiveEntity",
+                  "IsActiveEntity desc",
+                  "HasActiveEntity",
+                  "HasActiveEntity desc",
+                  "HasDraftEntity",
+                  "HasDraftEntity desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "descr",
+                  "owner",
+                  "timeline",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "risks",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved mitigations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Mitigations",
+                  "properties": {
+                    "@odata.count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RiskService.Mitigations"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a single mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "requestBody": {
+          "description": "New mitigation",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.Mitigations-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created mitigation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Mitigations"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a single mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "descr",
+                  "owner",
+                  "timeline",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "risks",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved mitigation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Mitigations"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Change a single mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.Mitigations-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a single mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/DraftAdministrativeData": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve draft administrative data of a mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "DraftUUID",
+                  "CreationDateTime",
+                  "CreatedByUser",
+                  "DraftIsCreatedByMe",
+                  "LastChangeDateTime",
+                  "LastChangedByUser",
+                  "InProcessByUser",
+                  "DraftIsProcessedByMe"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved draft administrative data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.DraftAdministrativeData"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Change draft administrative data of a mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete draft administrative data of a mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftActivate": {
+      "post": {
+        "summary": "Invoke action draftActivate",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ]
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftEdit": {
+      "post": {
+        "summary": "Invoke action draftEdit",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PreserveChanges": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftPrepare": {
+      "post": {
+        "summary": "Invoke action draftPrepare",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SideEffectsQualifier": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve sibling entity of a mitigation.",
+        "tags": [
+          "Mitigations"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "descr",
+                  "owner",
+                  "timeline",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "risks",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved sibling entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Mitigations"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftActivate": {
+      "post": {
+        "summary": "Invoke action draftActivate",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ]
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftEdit": {
+      "post": {
+        "summary": "Invoke action draftEdit",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PreserveChanges": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftPrepare": {
+      "post": {
+        "summary": "Invoke action draftPrepare",
+        "tags": [
+          "Mitigations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SideEffectsQualifier": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Mitigations(ID={ID},IsActiveEntity='{IsActiveEntity}')/risks": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a list of risks of a mitigation.",
+        "tags": [
+          "Mitigations",
+          "Risks"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdAt desc",
+                  "createdBy",
+                  "createdBy desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "modifiedBy",
+                  "modifiedBy desc",
+                  "ID",
+                  "ID desc",
+                  "title",
+                  "title desc",
+                  "owner",
+                  "owner desc",
+                  "prio",
+                  "prio desc",
+                  "descr",
+                  "descr desc",
+                  "miti_ID",
+                  "miti_ID desc",
+                  "impact",
+                  "impact desc",
+                  "criticality",
+                  "criticality desc",
+                  "IsActiveEntity",
+                  "IsActiveEntity desc",
+                  "HasActiveEntity",
+                  "HasActiveEntity desc",
+                  "HasDraftEntity",
+                  "HasDraftEntity desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "title",
+                  "owner",
+                  "prio",
+                  "descr",
+                  "miti_ID",
+                  "impact",
+                  "criticality",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "miti",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved risks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Risks",
+                  "properties": {
+                    "@odata.count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RiskService.Risks"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a single risk of a mitigation.",
+        "tags": [
+          "Mitigations",
+          "Risks"
+        ],
+        "requestBody": {
+          "description": "New risk",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.Risks-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created risk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Risks"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks": {
+      "get": {
+        "summary": "Retrieve a list of risks.",
+        "tags": [
+          "Risks"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdAt desc",
+                  "createdBy",
+                  "createdBy desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "modifiedBy",
+                  "modifiedBy desc",
+                  "ID",
+                  "ID desc",
+                  "title",
+                  "title desc",
+                  "owner",
+                  "owner desc",
+                  "prio",
+                  "prio desc",
+                  "descr",
+                  "descr desc",
+                  "miti_ID",
+                  "miti_ID desc",
+                  "impact",
+                  "impact desc",
+                  "criticality",
+                  "criticality desc",
+                  "IsActiveEntity",
+                  "IsActiveEntity desc",
+                  "HasActiveEntity",
+                  "HasActiveEntity desc",
+                  "HasDraftEntity",
+                  "HasDraftEntity desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "title",
+                  "owner",
+                  "prio",
+                  "descr",
+                  "miti_ID",
+                  "impact",
+                  "criticality",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "miti",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved risks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Risks",
+                  "properties": {
+                    "@odata.count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RiskService.Risks"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a single risk.",
+        "tags": [
+          "Risks"
+        ],
+        "requestBody": {
+          "description": "New risk",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.Risks-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created risk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Risks"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a single risk.",
+        "tags": [
+          "Risks"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "title",
+                  "owner",
+                  "prio",
+                  "descr",
+                  "miti_ID",
+                  "impact",
+                  "criticality",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "miti",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved risk",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Risks"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Change a single risk.",
+        "tags": [
+          "Risks"
+        ],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.Risks-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a single risk.",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/DraftAdministrativeData": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve draft administrative data of a risk.",
+        "tags": [
+          "Risks"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "DraftUUID",
+                  "CreationDateTime",
+                  "CreatedByUser",
+                  "DraftIsCreatedByMe",
+                  "LastChangeDateTime",
+                  "LastChangedByUser",
+                  "InProcessByUser",
+                  "DraftIsProcessedByMe"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved draft administrative data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.DraftAdministrativeData"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Change draft administrative data of a risk.",
+        "tags": [
+          "Risks"
+        ],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete draft administrative data of a risk.",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftActivate": {
+      "post": {
+        "summary": "Invoke action draftActivate",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ]
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftEdit": {
+      "post": {
+        "summary": "Invoke action draftEdit",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PreserveChanges": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/RiskService.draftPrepare": {
+      "post": {
+        "summary": "Invoke action draftPrepare",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SideEffectsQualifier": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve sibling entity of a risk.",
+        "tags": [
+          "Risks"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "title",
+                  "owner",
+                  "prio",
+                  "descr",
+                  "miti_ID",
+                  "impact",
+                  "criticality",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "miti",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved sibling entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Risks"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftActivate": {
+      "post": {
+        "summary": "Invoke action draftActivate",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ]
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftEdit": {
+      "post": {
+        "summary": "Invoke action draftEdit",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PreserveChanges": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/SiblingEntity/RiskService.draftPrepare": {
+      "post": {
+        "summary": "Invoke action draftPrepare",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Risks"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SideEffectsQualifier": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/miti": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: IsActiveEntity",
+          "in": "path",
+          "name": "IsActiveEntity",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieve miti of a risk.",
+        "tags": [
+          "Risks",
+          "Mitigations"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "createdAt",
+                  "createdBy",
+                  "modifiedAt",
+                  "modifiedBy",
+                  "ID",
+                  "descr",
+                  "owner",
+                  "timeline",
+                  "IsActiveEntity",
+                  "HasActiveEntity",
+                  "HasDraftEntity"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "risks",
+                  "DraftAdministrativeData",
+                  "SiblingEntity"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved miti",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskService.Mitigations"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/miti/RiskService.draftActivate": {
+      "post": {
+        "summary": "Invoke action draftActivate",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ]
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/miti/RiskService.draftEdit": {
+      "post": {
+        "summary": "Invoke action draftEdit",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PreserveChanges": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Risks(ID={ID},IsActiveEntity='{IsActiveEntity}')/miti/RiskService.draftPrepare": {
+      "post": {
+        "summary": "Invoke action draftPrepare",
+        "tags": [
+          "Risks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RiskService.Mitigations"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: IsActiveEntity",
+            "in": "path",
+            "name": "IsActiveEntity",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SideEffectsQualifier": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RiskService.DraftAdministrativeData": {
+        "title": "DraftAdministrativeData",
+        "type": "object",
+        "properties": {
+          "DraftUUID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "CreationDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "CreatedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsCreatedByMe": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "LastChangeDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "LastChangedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "InProcessByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsProcessedByMe": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "RiskService.DraftAdministrativeData-create": {
+        "title": "DraftAdministrativeData (for create)",
+        "type": "object",
+        "properties": {
+          "DraftUUID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "CreationDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "CreatedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsCreatedByMe": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "LastChangeDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "LastChangedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "InProcessByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsProcessedByMe": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "DraftUUID"
+        ]
+      },
+      "RiskService.DraftAdministrativeData-update": {
+        "title": "DraftAdministrativeData (for update)",
+        "type": "object",
+        "properties": {
+          "CreationDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "CreatedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsCreatedByMe": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "LastChangeDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "LastChangedByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "InProcessByUser": {
+            "type": "string",
+            "maxLength": 256,
+            "nullable": true
+          },
+          "DraftIsProcessedByMe": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "RiskService.Mitigations": {
+        "title": "Mitigations",
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "description": "{i18n>UserID.Description}"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "description": "{i18n>UserID.Description}"
+          },
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeline": {
+            "type": "string",
+            "nullable": true
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskService.Risks"
+            }
+          },
+          "risks@odata.count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "IsActiveEntity": {
+            "type": "boolean",
+            "default": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "DraftAdministrativeData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData"
+              }
+            ],
+            "nullable": true
+          },
+          "SiblingEntity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.Mitigations"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RiskService.Mitigations-create": {
+        "title": "Mitigations (for create)",
+        "type": "object",
+        "properties": {
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeline": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsActiveEntity": {
+            "type": "boolean",
+            "default": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "DraftAdministrativeData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData-create"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "IsActiveEntity"
+        ]
+      },
+      "RiskService.Mitigations-update": {
+        "title": "Mitigations (for update)",
+        "type": "object",
+        "properties": {
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeline": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "RiskService.Risks": {
+        "title": "Risks",
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "description": "{i18n>UserID.Description}"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "description": "{i18n>UserID.Description}"
+          },
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "prio": {
+            "type": "string",
+            "maxLength": 5,
+            "nullable": true
+          },
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "miti": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.Mitigations"
+              }
+            ],
+            "nullable": true
+          },
+          "miti_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "impact": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "criticality": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsActiveEntity": {
+            "type": "boolean",
+            "default": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "DraftAdministrativeData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData"
+              }
+            ],
+            "nullable": true
+          },
+          "SiblingEntity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.Risks"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RiskService.Risks-create": {
+        "title": "Risks (for create)",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "prio": {
+            "type": "string",
+            "maxLength": 5,
+            "nullable": true
+          },
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "miti_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "impact": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "criticality": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsActiveEntity": {
+            "type": "boolean",
+            "default": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "DraftAdministrativeData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RiskService.DraftAdministrativeData-create"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "IsActiveEntity"
+        ]
+      },
+      "RiskService.Risks-update": {
+        "title": "Risks (for update)",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "prio": {
+            "type": "string",
+            "maxLength": 5,
+            "nullable": true
+          },
+          "descr": {
+            "type": "string",
+            "nullable": true
+          },
+          "miti_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "impact": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "criticality": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "HasActiveEntity": {
+            "type": "boolean",
+            "default": false
+          },
+          "HasDraftEntity": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "count": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "description": "The number of entities in the collection. Available when using the [$count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount) query option."
+      },
+      "error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "details": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "innererror": {
+                "type": "object",
+                "description": "The structure of this object is service-specific"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "top": {
+        "name": "$top",
+        "in": "query",
+        "description": "Show only the first n items, see [Paging - Top](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptiontop)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "example": 50
+      },
+      "skip": {
+        "name": "$skip",
+        "in": "query",
+        "description": "Skip the first n items, see [Paging - Skip](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionskip)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "count": {
+        "name": "$count",
+        "in": "query",
+        "description": "Include count of items, see [Count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount)",
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "search": {
+        "name": "$search",
+        "in": "query",
+        "description": "Search items by search phrases, see [Searching](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionsearch)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "error": {
+        "description": "Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
